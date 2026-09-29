@@ -1,5 +1,5 @@
 #!/bin/bash
-DEVICE="192.168.1.11:5555"
+DEVICE="192.168.1.##:5555"
 
 # 1. Close any frozen/dead scrcpy windows
 killall scrcpy 2>/dev/null
@@ -30,7 +30,7 @@ adb -s $DEVICE shell input swipe 500 1500 500 500
 
 # 5. Type PIN
 sleep 0.1
-adb -s $DEVICE shell input text 194530
+adb -s $DEVICE shell input text ####
 
 # 6. Launch scrcpy session with screen off
 exec /usr/bin/scrcpy -s $DEVICE --turn-screen-off "$@"
