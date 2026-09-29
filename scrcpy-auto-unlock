@@ -1,17 +1,17 @@
 #!/bin/bash
 DEVICE="192.168.1.##:5555"
 
-# 1. Close any frozen/dead scrcpy windows
+# 1 Close any frozen scrcpy windows
 killall scrcpy 2>/dev/null
 
-# 2. Check if ADB is connected over Wi-Fi
+# 2 Check if adbb is connectwd over wifi
 if ! adb devices | grep -q "$DEVICE"; then
     echo "Connecting to ADB over Wi-Fi..."
     adb connect $DEVICE
     sleep 0.5
 fi
 
-# 3. If Wi-Fi connect failed (e.g. phone was rebooted), check for USB connection
+# 3 Ifwifi connect failed - check for usb connection
 if ! adb devices | grep -q "$DEVICE"; then
     USB_DEV=$(adb devices | grep -v "List" | grep -v "$DEVICE" | grep "device" | awk '{print $1}')
     if [ -n "$USB_DEV" ]; then
@@ -23,14 +23,14 @@ if ! adb devices | grep -q "$DEVICE"; then
     fi
 fi
 
-# 4. Wake screen and swipe up
+# 4 Wake the screen and swipe up
 adb -s $DEVICE shell input keyevent 224
 sleep 0.1
 adb -s $DEVICE shell input swipe 500 1500 500 500
 
-# 5. Type PIN
+# 5 Type the damn pin   
 sleep 0.1
 adb -s $DEVICE shell input text ####
 
-# 6. Launch scrcpy session with screen off
+# 6 Launch scrcpy session with screen off
 exec /usr/bin/scrcpy -s $DEVICE --turn-screen-off "$@"
